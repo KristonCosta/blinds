@@ -46,6 +46,13 @@ pub enum Event {
         state: ElementState,
         button: MouseButton,
     },
+    /// A touch event has been received
+    Touch {
+        surface: Surface,
+        phase: TouchPhase,
+        location: Vector2<f32>,
+        id: TouchEventId,
+    },
 
     /// The keyboard modifiers have changed.
     ModifiersChanged { modifiers: Modifiers },
@@ -565,4 +572,37 @@ pub enum GamepadAxis {
 
     RightStickX,
     RightStickY,
+}
+
+#[derive(Clone, Copy, PartialOrd, PartialEq, Eq, Ord, Debug, Hash)]
+/// A unique ID for multiple touch-able surfaces
+pub struct Surface(pub(crate) DeviceId);
+
+#[derive(Clone, Copy, PartialOrd, PartialEq, Eq, Ord, Debug, Hash)]
+/// A unique ID used to associate multiple touch phases part of the same
+/// series of touch events.
+/// Used to differentiate multiple touch events occurring at the same time.
+/// The identifier is consistent through the entire Started -> Ended/Cancelled
+/// flow, however the identifier may be used afterwards for new unrelated events
+pub struct TouchEventId(pub(crate) u64);
+
+#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
+/// The different touch phases
+pub enum TouchPhase {
+    Started,
+    Moved,
+    Ended,
+    Cancelled,
+}
+
+impl From<winit::event::TouchPhase> for TouchPhase {
+    fn from(phase: winit::event::TouchPhase) -> TouchPhase {
+        use winit::event::TouchPhase as WinitTouchPhase;
+        match phase {
+            WinitTouchPhase::Started => TouchPhase::Started,
+            WinitTouchPhase::Moved => TouchPhase::Moved,
+            WinitTouchPhase::Ended => TouchPhase::Ended,
+            WinitTouchPhase::Cancelled => TouchPhase::Cancelled,
+        }
+    }
 }

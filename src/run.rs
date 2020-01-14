@@ -188,6 +188,20 @@ fn convert_winit_window(event: winit::event::WindowEvent) -> Option<Event> {
             state: state.into(),
             button: button.into(),
         },
+        Touch(
+            winit::event::Touch {
+                device_id,
+                phase,
+                location,
+                force,
+                id
+              }
+        ) => Event::Touch {
+            surface: Surface(device_id),
+            phase: phase.into(),
+            location: pp_to_vec(location),
+            id: TouchEventId(id)
+        },
         _ => return None,
     })
 }
