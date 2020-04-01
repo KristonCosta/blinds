@@ -40,6 +40,7 @@ pub(crate) fn window_event(event: WindowEvent, window: &WindowContents) -> Optio
         }
         CursorLeft { device_id, .. } => Event::PointerLeft(PointerLeftEvent(PointerId(device_id))),
         MouseWheel { delta, .. } => Event::ScrollInput(delta.into()),
+        ModifiersChanged(state) => Event::ModifiersChanged(convert_modifiers(state)), 
         MouseInput {
             device_id,
             button,
@@ -55,10 +56,7 @@ pub(crate) fn window_event(event: WindowEvent, window: &WindowContents) -> Optio
 }
 
 pub(crate) fn device_event(event: DeviceEvent) -> Option<Event> {
-    use DeviceEvent::*;
-
     Some(match event {
-        ModifiersChanged(state) => Event::ModifiersChanged(convert_modifiers(state)),
         _ => return None,
     })
 }
