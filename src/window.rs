@@ -42,7 +42,7 @@ fn insert_canvas(
     let possible_canvas = document
         .get_element_by_id("canvas");
     let canvas = match possible_canvas {
-        Some(canvas) => canvas.dyn_into::<web_sys::HtmlCanvasElement>(), 
+        Some(canvas) => canvas.dyn_into::<std_web::web::html_element::CanvasElement>(), 
         None => {
             let canvas = window.canvas();
             document
