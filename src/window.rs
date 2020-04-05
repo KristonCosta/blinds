@@ -40,8 +40,6 @@ fn insert_canvas(
     let document = document();
 
     let possible_canvas = document
-        .body()
-        .expect("Document has no body node")
         .get_element_by_id("canvas");
     let canvas = match possible_canvas {
         Some(canvas) => canvas, 
