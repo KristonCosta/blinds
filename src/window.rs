@@ -34,7 +34,7 @@ fn insert_canvas(
     _settings: &Settings,
 ) -> std_web::web::html_element::CanvasElement {
     use std_web::traits::*;
-    use stdweb::unstable::TryInto;
+    use stdweb::webcore::try_from::TryInto;;
     use std_web::web::document;
     use winit::platform::web::WindowExtStdweb;
 
