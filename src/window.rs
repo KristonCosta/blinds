@@ -41,8 +41,10 @@ fn insert_canvas(
 
     let possible_canvas = document
         .get_element_by_id("canvas");
-    let canvas = match possible_canvas {
-        Some(canvas) => canvas.dyn_into::<std_web::web::html_element::CanvasElement>(), 
+    let canvas: std_web::web::html_element::CanvasElement = match possible_canvas {
+        Some(canvas) => {
+            canvas.try_into().unwrap()
+        }, 
         None => {
             let canvas = window.canvas();
             document
@@ -52,7 +54,7 @@ fn insert_canvas(
             canvas
         }
     };
-
+    
     #[cfg(feature = "favicon")]
     {
         if let Some(path) = _settings.icon_path {
