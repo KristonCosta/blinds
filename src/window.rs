@@ -37,12 +37,23 @@ fn insert_canvas(
     use std_web::web::document;
     use winit::platform::web::WindowExtStdweb;
 
-    let canvas = window.canvas();
     let document = document();
-    document
-        .body()
+
+    let possible_canvas = document
+        .body
         .expect("Document has no body node")
-        .append_child(&canvas);
+        .get_element_by_id("canvas");
+    let canvas = match possible_canvas {
+        Some(canvas) => canvas, 
+        None => {
+            let canvas = window.canvsa();
+            document
+                .body()
+                .expect("Document has no body node")
+                .append_child(&canvas);
+            canvas
+        }
+    };
 
     #[cfg(feature = "favicon")]
     {
